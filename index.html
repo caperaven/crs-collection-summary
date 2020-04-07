@@ -12,7 +12,7 @@
         import {getData} from "./src/data.js";
         import {getFilterProcessor} from "./src/index.js";
 
-        const data = getData();
+        const data = getData(1000);
         const struct = getFilterProcessor(data[0]);
 
         for (let record of data) {

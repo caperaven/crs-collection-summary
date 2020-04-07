@@ -28,7 +28,7 @@ const factory = {
         obj.values[field] = new Set();
         obj.actions[name] = new Function("record", `this.values.${field}.add(record["${field}"])`);
         obj.processActions.push(`this.actions.${name}.call(this, record)`);
-        obj.summaryActions.push(`result.${field} = Array.from(this.values.${field})`);
+        obj.summaryActions.push(`result.${field} = Array.from(this.values.${field});`);
     },
 
     range: (field, obj) => {
@@ -45,7 +45,7 @@ const factory = {
         this.values.${field}.values.add(value);
         `);
         obj.processActions.push(`this.actions.${name}.call(this, record)`);
-        obj.summaryActions.push(`result.${field} = {min: this.values.${field}.min, max: this.values.${field}.max, values: Array.from(this.values.${field}.values)}`);
+        obj.summaryActions.push(`result.${field} = {min: this.values.${field}.min, max: this.values.${field}.max, values: Array.from(this.values.${field}.values)};`);
     },
 
     string: (field,  obj) => factory.values(field, obj),
@@ -61,6 +61,6 @@ function getType(field, record) {
 
     if (booleanValues.indexOf(value) != -1) return "boolean";
     if (typeof value == "number") return "number";
-    if ((new Date("hello world")).toString() != "Invalid Date") return "date";
+    //if ((new Date(value)).toString() != "Invalid Date") return "date";
     return "string";
 }
