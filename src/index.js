@@ -2,7 +2,10 @@ export function getFilterProcessor(record) {
     const fields = Object.getOwnPropertyNames(record);
 
     const result = {
-        processActions: []
+        processActions: [],
+        summaryActions: [],
+        actions: {},
+        values: {}
     };
 
     for (let field of fields) {
@@ -13,31 +16,36 @@ export function getFilterProcessor(record) {
     result.processRecord = new Function("record", result.processActions.join("\n"));
     delete result.processActions;
 
+    result.uniqueValues = new Function(`const result = {};\n${result.summaryActions.join("\n")}\nreturn result;`);
+    delete result.summaryActions;
+
     return result;
 }
 
 const factory = {
     values: (field, obj) => {
         const name = `process_${field}`;
-        obj[`${field}Values`] = new Set();
-        obj[name] = new Function("record", `this.${field}Values.add(record["${field}"])`);
-        obj.processActions.push(`this.${name}(record)`);
+        obj.values[field] = new Set();
+        obj.actions[name] = new Function("record", `this.values.${field}.add(record["${field}"])`);
+        obj.processActions.push(`this.actions.${name}.call(this, record)`);
+        obj.summaryActions.push(`result.${field} = Array.from(this.values.${field})`);
     },
 
     range: (field, obj) => {
         const name = `process_${field}`;
-        obj[`${field}Values`] = {
+        obj.values[field] = {
             min: Number.MAX_VALUE,
             max: Number.MIN_VALUE,
             values: new Set()
         };
-        obj[name] = new Function("record", `
+        obj.actions[name] = new Function("record", `
         const value = record["${field}"];
-        this.${field}Values.min = value < this.${field}Values.min ? value : this.${field}Values.min;        
-        this.${field}Values.max = value > this.${field}Values.max ? value : this.${field}Values.max;        
-        this.${field}Values.values.add(value);
+        this.values.${field}.min = value < this.values.${field}.min ? value : this.values.${field}.min;        
+        this.values.${field}.max = value > this.values.${field}.max ? value : this.values.${field}.max;        
+        this.values.${field}.values.add(value);
         `);
-        obj.processActions.push(`this.${name}(record)`);
+        obj.processActions.push(`this.actions.${name}.call(this, record)`);
+        obj.summaryActions.push(`result.${field} = {min: this.values.${field}.min, max: this.values.${field}.max, values: Array.from(this.values.${field}.values)}`);
     },
 
     string: (field,  obj) => factory.values(field, obj),
@@ -52,7 +60,7 @@ function getType(field, record) {
     const value = record[field];
 
     if (booleanValues.indexOf(value) != -1) return "boolean";
-    if (Number.isNaN(value) == false) return "number";
-    if (isNaN(new Date(value)) == false) return "date";
+    if (typeof value == "number") return "number";
+    if ((new Date("hello world")).toString() != "Invalid Date") return "date";
     return "string";
 }
