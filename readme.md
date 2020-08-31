@@ -1,4 +1,4 @@
-# Test project for meta programming using objects
+# This library analyses an array of data and extracts from it summary data
 
 ## Introduction
 
