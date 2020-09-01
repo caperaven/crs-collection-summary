@@ -37,3 +37,23 @@ It is accepted that the fields you defined is actually in the objects that you a
 The first parameter of getFilterProcessor is required.  
 This object should represent the typical structure of the data including values that will indicate it's data type.
 If you do not define the second parameter (what fields you want to process), it will create a summary for every field in that initial object.
+
+## String values
+* fieldName - array of
+    + 0: {value: "code 0", count: 1}
+    + 0: {value: "code 1", count: 10}
+
+## Boolean results
+* isActive: Array(2)  
+    + 0: {value: true, count: 49716}  
+    + 1: {value: false, count: 50284}  
+
+## Number results
+* value:  
+    + ave: 49.66844  
+    + count: 100000  
+    + max: 99  
+    + min: 0  
+    + sum: 4966844  
+    + uniqueCount: 100  
+    + values: (100) [{…}, {…} ...]  - {value: 10, count: 100}
