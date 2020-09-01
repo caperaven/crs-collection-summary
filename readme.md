@@ -1,6 +1,13 @@
 # CRS Collection Summary
 
+## Install
+
+`npm install crs-collection-summary`
+
 ## Introduction
+
+https://github.com/caperaven/crs-collection-summary
+
 This library creates a summary data object for fields in a object array.  
 For string fields it groups unique values and counts how many times that value is used in the collection for that field.  
 Number values get more summary values such as:
