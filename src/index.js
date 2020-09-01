@@ -43,6 +43,7 @@ const factory = {
             min: Number.MAX_VALUE,
             max: Number.MIN_VALUE,
             sum: 0,
+            count: 0,
             values: new Map()
         };
         obj.actions[name] = new Function("record", `
@@ -51,14 +52,18 @@ const factory = {
             this.values.${field}.max = value > this.values.${field}.max ? value : this.values.${field}.max;
             this.values.${field}.sum = this.values.${field}.sum + value;
             const count = this.values.${field}.values.get(value) || 0;           
-            this.values.${field}.values.set(value, count + 1)
+            this.values.${field}.values.set(value, count + 1);
+            this.values.${field}.count += 1;
         `);
         obj.processActions.push(`this.actions.${name}.call(this, record)`);
         obj.summaryActions.push(`
         result.${field} = {
             min: this.values.${field}.min, 
             max: this.values.${field}.max, 
-            sum: this.values.${field}.sum, 
+            count: this.values.${field}.count,
+            sum: this.values.${field}.sum,
+            ave: this.values.${field}.sum / this.values.${field}.count,
+            uniqueAve: this.values.${field}.values.size,           
             values: Array.from(this.values.${field}.values).map(item => {return {value: item[0], count: item[1]}})};`);
     },
 

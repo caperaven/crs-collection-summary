@@ -12,14 +12,15 @@
         import {getData} from "./src/data.js";
         import {getFilterProcessor} from "./src/index.js";
 
-        const data = getData(1000);
+        const data = getData(100000);
+
         const struct = getFilterProcessor(data[0]);
 
         for (let record of data) {
             struct.processRecord(record);
         }
-
-        console.log(struct.uniqueValues());
+        const result = struct.uniqueValues();
+        console.log(result);
     </script>
 </body>
 </html>
