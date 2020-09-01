@@ -25,10 +25,14 @@ export function getFilterProcessor(record) {
 const factory = {
     values: (field, obj) => {
         const name = `process_${field}`;
-        obj.values[field] = new Set();
-        obj.actions[name] = new Function("record", `this.values.${field}.add(record["${field}"])`);
+        obj.values[field] = new Map();
+        obj.actions[name] = new Function("record", `
+            const value = record["${field}"];
+            const count = this.values.${field}.get(value) || 0;           
+            this.values.${field}.set(value, count + 1)
+        `);
         obj.processActions.push(`this.actions.${name}.call(this, record)`);
-        obj.summaryActions.push(`result.${field} = Array.from(this.values.${field});`);
+        obj.summaryActions.push(`result.${field} = Array.from(this.values.${field}).map(item => {return {value: item[0], count: item[1]}});`);
     },
 
     range: (field, obj) => {
