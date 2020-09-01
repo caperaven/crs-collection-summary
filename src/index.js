@@ -1,5 +1,5 @@
-export function getFilterProcessor(record) {
-    const fields = Object.getOwnPropertyNames(record);
+export function getFilterProcessor(record, fieldNames) {
+    const fields = fieldNames || Object.getOwnPropertyNames(record);
 
     const result = {
         processActions: [],
@@ -16,7 +16,7 @@ export function getFilterProcessor(record) {
     result.processRecord = new Function("record", result.processActions.join("\n"));
     delete result.processActions;
 
-    result.uniqueValues = new Function(`const result = {};\n${result.summaryActions.join("\n")}\nreturn result;`);
+    result.getSummary = new Function(`const result = {};\n${result.summaryActions.join("\n")}\nreturn result;`);
     delete result.summaryActions;
 
     return result;
@@ -63,7 +63,7 @@ const factory = {
             count: this.values.${field}.count,
             sum: this.values.${field}.sum,
             ave: this.values.${field}.sum / this.values.${field}.count,
-            uniqueAve: this.values.${field}.values.size,           
+            uniqueCount: this.values.${field}.values.size,           
             values: Array.from(this.values.${field}.values).map(item => {return {value: item[0], count: item[1]}})};`);
     },
 

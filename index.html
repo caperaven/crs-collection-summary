@@ -14,12 +14,12 @@
 
         const data = getData(100000);
 
-        const struct = getFilterProcessor(data[0]);
+        const struct = getFilterProcessor(data[0], ["code", "value", "isActive"]);
 
         for (let record of data) {
             struct.processRecord(record);
         }
-        const result = struct.uniqueValues();
+        const result = struct.getSummary();
         console.log(result);
     </script>
 </body>

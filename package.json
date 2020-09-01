@@ -1,8 +1,8 @@
 {
-    "name": "",
-    "version": "0.0.6",
-    "description": "",
-    "main": "index.js",
+    "name": "crs-collection-summary",
+    "version": "0.0.7",
+    "description": "Summerize array of data to get a summary of the values",
+    "main": "crs-collection-summary.min.js",
     "directories": {
         "test": "test"
     },
