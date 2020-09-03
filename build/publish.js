@@ -8,7 +8,7 @@ class Publish {
         const instance = new Publish();
         instance.copyFiles("./dist/*.*");
         instance.copyFiles("./readme.md");
-        //instance.copyFiles("./examples/*.html", "examples");
+        instance.copyFiles("./src/*.html");
         instance.bumpVersion();
     }
     

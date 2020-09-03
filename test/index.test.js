@@ -1,4 +1,4 @@
-import {getFilterProcessor} from "./../src/index.js";
+import {getFilterProcessor} from "../src/collection-summary.js";
 import {getData} from "../src/data.js";
 
 let data;
