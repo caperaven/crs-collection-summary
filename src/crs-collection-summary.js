@@ -15,6 +15,9 @@ class CollectionSummary extends crsbinding.classes.BindableElement {
             processor.processRecord(record);
         }
         const summary = processor.getSummary();
+
+        console.log(summary);
+
         this.createUI(summary, data.length);
     }
 

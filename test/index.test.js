@@ -7,22 +7,26 @@ beforeAll(() => {
 });
 
 test("process data", () => {
+    // Step 1
     const struct = getFilterProcessor(data[0], ["code", "value", "isActive"]);
+    // Step 2
     for (let record of data) {
         struct.processRecord(record);
     }
+    // Step 3
     const result = struct.getSummary();
+
     expect(result.code).not.toBeNull();
     expect(result.value).not.toBeNull();
     expect(result.isActive).not.toBeNull();
 
-    expect(result.code.length).toEqual(100000);
-    expect(result.code[0].value).toEqual("code 0");
-    expect(result.code[0].count).toEqual(1);
+    expect(result.code.values.length).toEqual(100000);
+    expect(result.code.values[0].value).toEqual("code 0");
+    expect(result.code.values[0].count).toEqual(1);
 
-    expect(result.isActive.length).toEqual(2);
-    const trueItem = result.isActive.find(item => item.value == true);
-    const falseItem = result.isActive.find(item => item.value == false);
+    expect(result.isActive.values.length).toEqual(2);
+    const trueItem = result.isActive.values.find(item => item.value == true);
+    const falseItem = result.isActive.values.find(item => item.value == false);
     expect(trueItem).not.toBeNull();
     expect(falseItem).not.toBeNull();
     expect(trueItem.count).toBeGreaterThan(0);

@@ -1,14 +1,22 @@
 export function getData(count) {
     const result = [];
 
+    let siteCount = 0;
     for (let i = 0; i < count; i++) {
+        siteCount += 1;
+
         result.push({
             id: i,
             code: `code ${i}`,
             isActive: !Math.round(Math.random()),
+            siteCode: `Site ${siteCount}`,
             value: getRandomNumber(0, 100),
             date: getRandomDate()
         })
+
+        if (siteCount > 100) {
+            siteCount = 0;
+        }
     }
 
     return result;

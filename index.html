@@ -10,13 +10,13 @@
 </head>
 <body>
     <crs-collection-summary></crs-collection-summary>
-    <script type="module" src="/publish/crs-collection-summary.js"></script>
+    <script type="module" src="/src/crs-collection-summary.js"></script>
     <script type="module">
         import {getData} from "./src/data.js";
         const data = getData(100000);
 
         const summary = document.querySelector("crs-collection-summary");
-        summary.addEventListener("ready", () => summary.summerize(data, {code: "string", value: "number", isActive: "boolean"}));
+        summary.addEventListener("ready", () => {summary.summerize(data, {code: "string", value: "number", isActive: "boolean", siteCode: "string"})});
     </script>
 </body>
 </html>
